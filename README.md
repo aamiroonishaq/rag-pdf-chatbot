@@ -1,32 +1,21 @@
 # RAG Document Q&A
 
-A Retrieval-Augmented Generation (RAG) application that lets you upload a PDF
-and ask natural-language questions about its content. Built with **LangChain**,
-**Chroma** (vector database), and **OpenAI** models, with a **Gradio** web UI.
+A Retrieval-Augmented Generation (RAG) app that lets you upload a PDF and ask natural-language questions about its content — built with **LangChain**, **Chroma**, and **Google Gemini** (free tier), wrapped in a **Gradio** UI.
 
-## How it works
+## Demo
 
-1. **Load** – the uploaded PDF is parsed with `PyPDFLoader`.
-2. **Chunk** – the document is split into overlapping chunks using
-   `RecursiveCharacterTextSplitter` for better retrieval context.
-3. **Embed & Store** – each chunk is embedded with `text-embedding-3-small`
-   and stored in a local **Chroma** vector store.
-4. **Retrieve & Generate** – on each question, the top-matching chunks are
-   retrieved and passed as context to `gpt-4o-mini`, which generates an
-   answer grounded in the document.
+![App Screenshot](assets/screenshot.png)
 
-## Project Structure
+## How It Works
 
-```
-rag-doc-qa/
-├── app.py                 # Gradio UI entry point
-├── src/
-│   └── rag_pipeline.py    # Core RAG pipeline (load, chunk, embed, retrieve, answer)
-├── data/                   # Uploaded PDFs are stored here
-├── requirements.txt
-├── .env.example
-└── README.md
-```
+1. **Load** – PDF parsed with `PyPDFLoader`
+2. **Chunk** – split into overlapping chunks via `RecursiveCharacterTextSplitter`
+3. **Embed & Store** – chunks embedded with `gemini-embedding-001` and stored in **Chroma**
+4. **Retrieve & Generate** – relevant chunks retrieved and passed to `gemini-2.5-flash` to generate grounded answers
+
+## Tech Stack
+
+LangChain · Chroma · Google Gemini · Gradio · PyPDF
 
 ## Setup
 
@@ -36,38 +25,25 @@ cd rag-doc-qa
 pip install -r requirements.txt
 ```
 
-Create a `.env` file based on `.env.example` and add your OpenAI API key:
+Get a **free** Gemini API key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
 
-```
-OPENAI_API_KEY=your-openai-api-key-here
-```
+Create a `.env` file from `.env.example`:
 
-## Running the app
+## Run
 
 ```bash
 python app.py
 ```
 
-This launches a local Gradio interface where you can:
-
-1. Enter your OpenAI API key (or rely on the `.env` file) and click **Initialize**.
-2. Upload a PDF and click **Index Document**.
-3. Ask questions about the document in the chat interface.
-
-## Tech Stack
-
-- **LangChain** – orchestration of the RAG pipeline
-- **Chroma** – vector database for similarity search
-- **OpenAI** – embeddings (`text-embedding-3-small`) and chat model (`gpt-4o-mini`)
-- **Gradio** – web interface
-- **PyPDF** – PDF parsing
+1. Enter your API key and click **Initialize**
+2. Upload a PDF and click **Index Document**
+3. Ask questions in the chat box
 
 ## Possible Extensions
 
-- Support for multiple file formats (DOCX, TXT, web pages)
+- Support for DOCX, TXT, and web pages
 - Multi-document collections with source citations
-- Local/open-source LLMs and embedding models (e.g., via Ollama)
-- Conversation memory for multi-turn follow-up questions
+- Conversation memory for follow-up questions
 
 ## License
 
